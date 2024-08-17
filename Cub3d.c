@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/17 22:05:15 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/17 22:51:23 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,37 +102,47 @@ int check_textures_and_colors(t_map *map)
 // Function to check if the map is enclosed by walls
 int is_map_enclosed_by_walls(t_map *map)
 {
-    int i = 0;
+    int i = 6;
     int j = 0;
     int len;
 
     // Check the first and last rows
-    len = ft_strlen(map->map_line[0]);
+    len = ft_strlen(map->map_line[6]);
     while (i < len)
     {
-        if (map->map_line[0][i] != '1' || map->map_line[map->map_height - 1][i] != '1' || map->map_line[0][i] != ' ' || map->map_line[i][map->map_height - 1] != '\t')
+        if (map->map_line[6][i] != '1' || map->map_line[map->map_height - 1][i] != '1')
         {
-            print_error(3);
-            return 0;
+            if(map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ')
+                continue;
+            else
+            {
+                print_error(3);
+                return 0;
+            }
         }
         i++;
     }
 
     // Check the first and last columns of each row
-    i = 0;
+    i = 6;
     while (i < map->map_height)
     {
         len = ft_strlen(map->map_line[i]);
-        if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1' || map->map_line[i][0] != ' ' || map->map_line[i][line - 1] != '\t')
+        if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1')
         {
-            print_error(3);
-            return 0;
+            if(map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ')
+                continue;
+            else
+            {
+                print_error(3);
+                return 0;
+            }
         }
         i++;
     }
 
     // Check inner map for open spaces
-    i = 1;
+    i = 7;
     while (i < map->map_height - 1)
     {
         j = 1;
@@ -155,15 +165,15 @@ int is_map_enclosed_by_walls(t_map *map)
     return 1;
 }
 
-int check_type_id(t_map *map, int *i)
+int check_type_id(t_map *map, int i)
 {
     char **test;
     int j;
   
     j = 0;
-    while(map->map_line[*i] && ft_isalpha(map->map_line[*i][0]))
+    while(map->map_line[i] && ft_isalpha(map->map_line[i][0]))
     {
-        test = ft_split(map->map_line[*i], ' ');
+        test = ft_split(map->map_line[i], ' ');
         if (ft_strlen(test[0]) <= 2 && ft_isalpha(test[0][0]))
         {
             if(test[0][0] == 'N' && test[0][1] == 'O') 
@@ -188,7 +198,7 @@ int check_type_id(t_map *map, int *i)
         free(test);
         i++;
     }
-    if(*i != 6)
+    if(i != 6)
         return 0;
     
     return (1);
@@ -198,7 +208,7 @@ int check_type_id(t_map *map, int *i)
 void parc_map(t_map *map)
 {
     int i = 0;
-    if(!check_type_id(map, &i))
+    if(!check_type_id(map, i))
         print_error(0);
     else 
     {
@@ -206,7 +216,6 @@ void parc_map(t_map *map)
         map->map_height = 0;
         while (map->map_line[map->map_height])
             map->map_height++;
-        map->map_height -= i;
         is_map_enclosed_by_walls(map);
     }
     

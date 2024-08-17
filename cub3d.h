@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:08:08 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/17 21:01:10 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/17 22:21:32 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_map
 
 int check_textures_and_colors(t_map *map);
 t_map *read_map(char *fille);
-int check_type_id(t_map *map, int *i);
+int check_type_id(t_map *map, int i);
 void parc_map(t_map *map);
 int is_map_enclosed_by_walls(t_map *map);
 
