@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/17 21:05:24 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/17 22:05:15 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int is_map_enclosed_by_walls(t_map *map)
     len = ft_strlen(map->map_line[0]);
     while (i < len)
     {
-        if (map->map_line[0][i] != '1' || map->map_line[map->map_height - 1][i] != '1')
+        if (map->map_line[0][i] != '1' || map->map_line[map->map_height - 1][i] != '1' || map->map_line[0][i] != ' ' || map->map_line[i][map->map_height - 1] != '\t')
         {
             print_error(3);
             return 0;
@@ -123,7 +123,7 @@ int is_map_enclosed_by_walls(t_map *map)
     while (i < map->map_height)
     {
         len = ft_strlen(map->map_line[i]);
-        if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1')
+        if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1' || map->map_line[i][0] != ' ' || map->map_line[i][line - 1] != '\t')
         {
             print_error(3);
             return 0;
