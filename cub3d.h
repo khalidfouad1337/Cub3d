@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:08:08 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/14 16:12:28 by khalid           ###   ########.fr       */
+/*   Updated: 2024/08/17 21:01:10 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ typedef struct s_map
     char        buff_map[BUFFERSIZE];
     char        **map_line;
     int         fd_map;
+     int        map_height; 
     
 } t_map;
 
+int check_textures_and_colors(t_map *map);
 t_map *read_map(char *fille);
-int check_type_id(t_map *map);
+int check_type_id(t_map *map, int *i);
 void parc_map(t_map *map);
+int is_map_enclosed_by_walls(t_map *map);
 
 #endif
