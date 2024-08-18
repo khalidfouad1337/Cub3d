@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/17 22:51:23 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/18 21:14:57 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,30 +108,36 @@ int is_map_enclosed_by_walls(t_map *map)
 
     // Check the first and last rows
     len = ft_strlen(map->map_line[6]);
-    while (i < len)
+    while (j < len)
     {
-        if (map->map_line[6][i] != '1' || map->map_line[map->map_height - 1][i] != '1')
+        if (map->map_line[6][j] != '1' || map->map_line[map->map_height - 1][j] != '1')
         {
-            if(map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ')
+            if(map->map_line[6][j] == ' ' || map->map_line[len - 1][j] == ' ')
+            {
+                j++;
                 continue;
+            }
             else
             {
                 print_error(3);
                 return 0;
             }
         }
-        i++;
+        j++;
     }
 
     // Check the first and last columns of each row
     i = 6;
     while (i < map->map_height)
     {
-        len = ft_strlen(map->map_line[i]);
+        len = ft_strlen(map->map_line[6]);
         if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1')
         {
             if(map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ')
+            {
+                i++;
                 continue;
+            }
             else
             {
                 print_error(3);
@@ -146,7 +152,7 @@ int is_map_enclosed_by_walls(t_map *map)
     while (i < map->map_height - 1)
     {
         j = 1;
-        len = ft_strlen(map->map_line[i]);
+        len = ft_strlen(map->map_line[7]);
         while (j < len - 1)
         {
             if (map->map_line[i][j] == '0' || map->map_line[i][j] == 'S' || map->map_line[i][j] == 'N' || map->map_line[i][j] == 'E' || map->map_line[i][j] == 'W')
