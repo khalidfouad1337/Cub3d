@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/20 15:30:44 by khalid           ###   ########.fr       */
+/*   Updated: 2024/08/20 18:39:09 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void print_error(int i)
         printf("Error: Floor color is not valid. It should be in the format 'r,g,b' with values between 0 and 255.\n");
     else if (i == 3)
         printf("Error: Map is not properly enclosed by walls.\n");
+    else if (i == 4)
+        printf("error elment");
+    else if (i == 5)
+        printf("Multiple new lines in a map");
 }
 
 t_map *read_map(char *fille)
@@ -96,7 +100,6 @@ int check_textures_and_colors(t_map *map)
         print_error(2);
         return 0;
     }
-    printf("Textures and colors are valid.\n");
     return 1;
 }
 
@@ -108,7 +111,6 @@ int is_map_enclosed_by_walls(t_map *map)
     int len = 0;
 
     // Check the first and last rows
-    printf(" From is_map_enc.. : %s\n", map->map_line[map->map_height - 1]);
     len = ft_strlen(map->map_line[i]);
     while (j < len - 1)
     {
@@ -155,7 +157,7 @@ int is_map_enclosed_by_walls(t_map *map)
         len = ft_strlen(map->map_line[i]);
         if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1')
         {
-            if (map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ' || map->map_line[i][len] == '\0')
+            if (map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ')
             {
                 i++;
                 continue;
@@ -231,36 +233,74 @@ int check_type_id(t_map *map, int i)
     }
     if (i != 6)
         return 0;
-    printf("Type ID is valid.\n");
     return (1);
 }
 
-int	validation_map1(char **str)
+int	check_element(t_map	*map)
 {
-	t_parm	data;
-
-	par.p = 0;
-	par.e = 0;
-	par.c = 0;
-	par.i = -1;
-	while (str[++par.i])
+	int i = 5;
+    int j = 0;
+    int p = 0;
+	while (map->map_line[++i])
 	{
-		par.j = -1;
-		while (str[par.i][++par.j])
+		j = -1;
+		while (map->map_line[i][++j])
 		{
-			if (str[par.i][par.j] == 'P')
-				par.p++;
-			else if (str[par.i][par.j] == 'E')
-				par.e++;
-			else if (str[par.i][par.j] == 'C')
-				par.c++;
-			else if (str[par.i][par.j] != '1' && str[par.i][par.j] != '0')
+			if (map->map_line[i][j] == 'E' || map->map_line[i][j] == 'W' || map->map_line[i][j] == 'N' || map->map_line[i][j] == 'S')
+				p++;
+			else if (map->map_line[i][j] != '1' && map->map_line[i][j] != '0' && map->map_line[i][j] != ' ')
 				return (0);
 		}
 	}
-	if (par.p != 1 || par.e != 1 || par.c < 1)
+	if (p != 1)
 		return (0);
-	return (par.c);
+	return (1);
+}
+int	get_map_index(char *map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		while (map[i] && (map[i] == '\n' | map[i] == '\t' || map[i] == ' '))
+			i++;
+		if (map[i] == 'N' || map[i] == 'S' || map[i] == 'W'
+			|| map[i] == 'E' || map[i] == 'F' || map[i] == 'C')
+		{
+			while (map[i] && map[i] != '\n')
+				i++;
+		}
+		else
+		{
+			while (map[i] && map[i] != '1')
+				i++;
+			if (map[i] == '1')
+				return (i);
+		}
+		if (map[i])
+			i++;
+	}
+	return (0);
+}
+
+void	check_map_newlines(char *map)
+{
+	int	i;
+
+	i = get_map_index(map);
+	while (map[i])
+	{
+		if (map[i] == '\n')
+		{
+			i += 1;
+			while (map[i] && map[i] == ' ')
+				i++;
+			if (map[i] == '\n')
+				print_error(5);
+		}
+		i++;
+	}
 }
 
 void parc_map(t_map *map)
@@ -270,12 +310,13 @@ void parc_map(t_map *map)
         print_error(0);
     else
     {
+        if (!check_element(map))
+            print_error(4);
+        check_map_newlines(map->buff_map);
         check_textures_and_colors(map);
         map->map_height = 0;
         while (map->map_line[map->map_height])
             map->map_height++;
-        // printf("Map height: %d\n", map->map_height);
-        printf("%s\n", map->map_line[map->map_height - 1]);
         is_map_enclosed_by_walls(map);
     }
 }
