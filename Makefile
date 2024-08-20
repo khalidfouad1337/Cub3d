@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+         #
+#    By: khalid <khalid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 16:30:13 by kfouad            #+#    #+#              #
-#    Updated: 2024/08/16 18:06:20 by kfouad           ###   ########.fr        #
+#    Updated: 2024/08/19 20:35:42 by khalid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ NAME = Cub3d
 CC = gcc
 
 AR = ar -rc #create archive
-
-CFLAGS = -Wall -Wextra -Werror
+# -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 RM = rm -rf # f = force | r = dir
 
@@ -31,7 +31,7 @@ OBJ = ${SRCS:.c=.o}
 
 ${NAME} : ${OBJ}
 		make -C libft -s
-		${CC} $^ ${LIBFT} -o $@
+		${CC} $^ ${LIBFT} ${CFLAGS} -o $@
 
 all: ${NAME}
 

@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   Cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: khalid <khalid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/18 21:14:57 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/20 15:30:44 by khalid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"cub3d.h"
+#include "cub3d.h"
 
 void print_error(int i)
 {
     if (i == 0)
         printf("Error in type ID");
-    else if(i == 1)
+    else if (i == 1)
         printf("Error: NO texture is not a valid .png file.\n");
-    else if(i == 2)
+    else if (i == 2)
         printf("Error: Floor color is not valid. It should be in the format 'r,g,b' with values between 0 and 255.\n");
     else if (i == 3)
         printf("Error: Map is not properly enclosed by walls.\n");
@@ -28,18 +28,18 @@ t_map *read_map(char *fille)
 {
     int fd;
     char buff[BUFFERSIZE];
-    int     readline;
-    t_map   *result;
+    int readline;
+    t_map *result;
 
     readline = '\0';
     fd = open(fille, O_RDONLY);
-    if(fd < 3)
+    if (fd < 3)
         return NULL;
     readline = read(fd, buff, BUFFERSIZE);
-    if(!readline)
+    if (!readline)
         return (NULL);
     readline[buff] = '\0';
-    result = (t_map *)malloc(sizeof (t_map));
+    result = (t_map *)malloc(sizeof(t_map));
     result->fd_map = fd;
     ft_strlcpy(result->buff_map, buff, ft_strlen(buff));
     result->map_line = ft_split(buff, '\n');
@@ -70,7 +70,7 @@ int is_valid_color(const char *color_str)
     if (i != 3)
         return 0;
     r = ft_atoi(str[0]);
-    if (r < 0 || r > 255 )
+    if (r < 0 || r > 255)
         return 0;
     color_str++;
     g = ft_atoi(str[1]);
@@ -78,7 +78,7 @@ int is_valid_color(const char *color_str)
         return 0;
     color_str++;
     b = ft_atoi(str[2]);
-    if (b < 0 || b > 255 )
+    if (b < 0 || b > 255)
         return 0;
     return 1;
 }
@@ -96,6 +96,7 @@ int check_textures_and_colors(t_map *map)
         print_error(2);
         return 0;
     }
+    printf("Textures and colors are valid.\n");
     return 1;
 }
 
@@ -104,15 +105,36 @@ int is_map_enclosed_by_walls(t_map *map)
 {
     int i = 6;
     int j = 0;
-    int len;
+    int len = 0;
 
     // Check the first and last rows
-    len = ft_strlen(map->map_line[6]);
-    while (j < len)
+    printf(" From is_map_enc.. : %s\n", map->map_line[map->map_height - 1]);
+    len = ft_strlen(map->map_line[i]);
+    while (j < len - 1)
     {
-        if (map->map_line[6][j] != '1' || map->map_line[map->map_height - 1][j] != '1')
+        if (map->map_line[i][j] != '1')
         {
-            if(map->map_line[6][j] == ' ' || map->map_line[len - 1][j] == ' ')
+            if (map->map_line[i][j] == ' ')
+            {
+                j++;
+                continue;
+            }
+            else
+            {
+                print_error(3);
+                return 0;
+            }
+        }
+        j++;
+    }
+
+    j = 0;
+    len = ft_strlen(map->map_line[map->map_height - 1]);
+    while (j < len - 1)
+    {
+        if (map->map_line[map->map_height - 1][j] != '1')
+        {
+            if (map->map_line[map->map_height - 1][j] == ' ')
             {
                 j++;
                 continue;
@@ -130,10 +152,10 @@ int is_map_enclosed_by_walls(t_map *map)
     i = 6;
     while (i < map->map_height)
     {
-        len = ft_strlen(map->map_line[6]);
+        len = ft_strlen(map->map_line[i]);
         if (map->map_line[i][0] != '1' || map->map_line[i][len - 1] != '1')
         {
-            if(map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ')
+            if (map->map_line[i][0] == ' ' || map->map_line[i][len - 1] == ' ' || map->map_line[i][len] == '\0')
             {
                 i++;
                 continue;
@@ -152,12 +174,16 @@ int is_map_enclosed_by_walls(t_map *map)
     while (i < map->map_height - 1)
     {
         j = 1;
-        len = ft_strlen(map->map_line[7]);
+        len = ft_strlen(map->map_line[i]);
         while (j < len - 1)
         {
             if (map->map_line[i][j] == '0' || map->map_line[i][j] == 'S' || map->map_line[i][j] == 'N' || map->map_line[i][j] == 'E' || map->map_line[i][j] == 'W')
             {
-                if (map->map_line[i - 1][j] == ' ' || map->map_line[i + 1][j] == ' ' || map->map_line[i][j - 1] == ' ' || map->map_line[i][j + 1] == ' ')
+
+                if ((i > 6 && ((int)ft_strlen(map->map_line[i - 1]) <= j || map->map_line[i - 1][j] == ' '))
+                    || (i < (len - 1) &&( (int)ft_strlen(map->map_line[i + 1]) <= j || map->map_line[i + 1][j] == ' '))
+                    || (j > 0 && map->map_line[i][j - 1] == ' ')
+                    || (j < (int)ft_strlen(map->map_line[i]) - 2 && map->map_line[i][j + 1] == ' '))
                 {
                     print_error(3);
                     return 0;
@@ -167,7 +193,6 @@ int is_map_enclosed_by_walls(t_map *map)
         }
         i++;
     }
-
     return 1;
 }
 
@@ -175,14 +200,14 @@ int check_type_id(t_map *map, int i)
 {
     char **test;
     int j;
-  
+
     j = 0;
-    while(map->map_line[i] && ft_isalpha(map->map_line[i][0]))
+    while (map->map_line[i] && ft_isalpha(map->map_line[i][0]))
     {
         test = ft_split(map->map_line[i], ' ');
         if (ft_strlen(test[0]) <= 2 && ft_isalpha(test[0][0]))
         {
-            if(test[0][0] == 'N' && test[0][1] == 'O') 
+            if (test[0][0] == 'N' && test[0][1] == 'O')
                 map->no = ft_strdup(test[1]);
             else if (test[0][0] == 'S' && test[0][1] == 'O')
                 map->so = ft_strdup(test[1]);
@@ -204,27 +229,55 @@ int check_type_id(t_map *map, int i)
         free(test);
         i++;
     }
-    if(i != 6)
+    if (i != 6)
         return 0;
-    
+    printf("Type ID is valid.\n");
     return (1);
 }
 
+int	validation_map1(char **str)
+{
+	t_parm	data;
+
+	par.p = 0;
+	par.e = 0;
+	par.c = 0;
+	par.i = -1;
+	while (str[++par.i])
+	{
+		par.j = -1;
+		while (str[par.i][++par.j])
+		{
+			if (str[par.i][par.j] == 'P')
+				par.p++;
+			else if (str[par.i][par.j] == 'E')
+				par.e++;
+			else if (str[par.i][par.j] == 'C')
+				par.c++;
+			else if (str[par.i][par.j] != '1' && str[par.i][par.j] != '0')
+				return (0);
+		}
+	}
+	if (par.p != 1 || par.e != 1 || par.c < 1)
+		return (0);
+	return (par.c);
+}
 
 void parc_map(t_map *map)
 {
     int i = 0;
-    if(!check_type_id(map, i))
+    if (!check_type_id(map, i))
         print_error(0);
-    else 
+    else
     {
         check_textures_and_colors(map);
         map->map_height = 0;
         while (map->map_line[map->map_height])
             map->map_height++;
+        // printf("Map height: %d\n", map->map_height);
+        printf("%s\n", map->map_line[map->map_height - 1]);
         is_map_enclosed_by_walls(map);
     }
-    
 }
 
 int main(int ac, char **av)
@@ -235,6 +288,6 @@ int main(int ac, char **av)
     map = read_map(av[1]);
     if (map == NULL)
         return (printf("Failed to load map.\n"), 1);
-    parc_map(map);   
+    parc_map(map);
     return (0);
 }
