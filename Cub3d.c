@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/21 18:28:47 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/21 19:01:57 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,16 @@ void	check_map_newlines(char *map)
 	}
 }
 
+int file_exists(t_map *map) {
+    int fd = open(map->ea, O_RDONLY);
+    if (fd != -1) {
+        close(fd);
+        return 1; // File exists
+    } else {
+        return 0; // File does not exist
+    }
+}
+
 void parc_map(t_map *map)
 {
     int i = 0;
@@ -89,6 +99,7 @@ void parc_map(t_map *map)
         print_error(0);
     else
     {
+        file_exists(map);
         if (!check_element(map))
             print_error(4);
         check_map_newlines(map->buff_map);
