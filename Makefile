@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: khalid <khalid@student.42.fr>              +#+  +:+       +#+         #
+#    By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 16:30:13 by kfouad            #+#    #+#              #
-#    Updated: 2024/08/19 20:35:42 by khalid           ###   ########.fr        #
+#    Updated: 2024/08/21 18:37:31 by kfouad           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RM = rm -rf # f = force | r = dir
 
 LIBFT = libft/libft.a
 
-SRCS = Cub3d.c
+SRCS = Cub3d.c check_id_stor_texture.c check_map_enclosed.c check_textures_colors.c read_map.c print_error.c
 
 OBJ = ${SRCS:.c=.o}
 
