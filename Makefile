@@ -6,7 +6,7 @@
 #    By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 16:30:13 by kfouad            #+#    #+#              #
-#    Updated: 2024/08/21 18:37:31 by kfouad           ###   ########.fr        #
+#    Updated: 2024/08/22 18:53:10 by kfouad           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ OBJ = ${SRCS:.c=.o}
 
 ${NAME} : ${OBJ}
 		make -C libft -s
-		${CC} $^ ${LIBFT} ${CFLAGS} -o $@
+		${CC} $^ ${LIBFT} ${CFLAGS} -Lmlx -lmlx -framework OpenGL -framework AppKit -o $@
 
 all: ${NAME}
 

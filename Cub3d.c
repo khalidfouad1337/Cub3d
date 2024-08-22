@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 14:53:03 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/21 19:08:52 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/22 18:12:09 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void parc_map(t_map *map)
 
 int main(int ac, char **av)
 {
+	void *mlx;
+    void *win;
     if (ac != 2)
         return (printf("argument not valid\n"), 1);
     t_map *map;
@@ -121,5 +123,9 @@ int main(int ac, char **av)
     if (map == NULL)
         return (printf("Failed to load map.\n"), 1);
     parc_map(map);
+	mlx = mlx_init();
+    win = mlx_new_window(mlx, 800, 600, "My first window");
+    mlx_pixel_put(mlx, win, 400, 300, 0xFFFFFF); // Draw white pixel in the center
+    mlx_loop(mlx);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kfouad <kfouad@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:08:08 by khalid            #+#    #+#             */
-/*   Updated: 2024/08/21 18:32:38 by kfouad           ###   ########.fr       */
+/*   Updated: 2024/08/22 18:13:18 by kfouad           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
+# include <mlx.h>
 #include "libft/libft.h"
 
 #ifndef BUFFERSIZE
